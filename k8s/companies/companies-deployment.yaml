@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: companies-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: companies-app
+  template:
+    metadata:
+      labels:
+        app: companies-app
+    spec:
+      containers:
+        - name: companies-app
+          image: sg1sv/companies:latest
+          envFrom:
+            - configMapRef:
+                name: companies-app-config
+          resources:
+            limits:
+              memory: "500Mi"
+              cpu: "1000m"
+          ports:
+            - containerPort: 3000
+      initContainers:
+        - name: init-companies-app
+          image: sg1sv/companies:latest
+          envFrom:
+            - configMapRef:
+                name: companies-app-config
+          command: [ "/companies" ]
+          args: ["migrate", "up"]
