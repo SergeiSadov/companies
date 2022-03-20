@@ -22,6 +22,11 @@ func (h *Handler) Update(ctx *fasthttp.RequestCtx) {
 		return
 	}
 
+	if err = h.validator.ValidateUpdateRequest(req); err != nil {
+		h.ReplyCustomError(ctx, h.errorAdapter.AdaptToHttpCode(err))
+		return
+	}
+
 	resp, err := h.useCase.Update(ctx, req)
 	if err != nil {
 		h.logger.Error(err.Error(), zap.String(constants.FieldModule, moduleUpdateCompanyHandler))

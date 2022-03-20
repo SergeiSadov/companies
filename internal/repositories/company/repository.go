@@ -96,7 +96,7 @@ func (r *Repository) Update(ctx context.Context, company *repository.Company) (u
 }
 
 func (r *Repository) Delete(ctx context.Context, params *repository.SearchParams) (err error) {
-	if err = r.db.Debug().WithContext(ctx).Transaction(func(tx *gorm.DB) (err error) {
+	if err = r.db.WithContext(ctx).Transaction(func(tx *gorm.DB) (err error) {
 		res := tx.Table(TableCompanies).Delete(&repository.Company{ID: params.ID})
 		if res.Error != nil {
 			return res.Error

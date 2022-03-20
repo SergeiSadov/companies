@@ -21,7 +21,7 @@ var (
 				City:     "Default city",
 			},
 			Industry: api.Industry{
-				ID:           "abc",
+				ID:           defaultUUID,
 				Name:         "retail",
 				MarketValue:  1000,
 				Co2Footprint: "large",

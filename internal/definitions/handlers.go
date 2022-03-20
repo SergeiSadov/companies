@@ -6,6 +6,7 @@ import (
 
 	"companies/internal/handlers"
 	"companies/internal/handlers/company"
+	"companies/internal/handlers/company/validators"
 	company_use_case "companies/internal/usecases/company"
 	"companies/pkg/error_adapters/http_adapter"
 )
@@ -42,6 +43,7 @@ func GetCompanyHandlerDef() di.Def {
 				UseCase:      companyUseCase,
 				Logger:       logger,
 				ErrorAdapter: httpAdapter,
+				Validator:    validators.New(validators.PreparedValidatorParams),
 			}), nil
 		},
 	}

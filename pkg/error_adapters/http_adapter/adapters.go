@@ -19,7 +19,13 @@ func AdaptNotFoundError(err error) (code int) {
 
 func AdaptBadRequestError(err error) (code int) {
 	switch err {
-	case company.ErrAlreadyExist, errors.ErrEmptyParamID, errors.ErrInvalidJSON:
+	case company.ErrAlreadyExist,
+		errors.ErrEmptyParamID,
+		errors.ErrInvalidJSON,
+		errors.ErrInvalidCompanyName,
+		errors.ErrInvalidIndustryName,
+		errors.ErrInvalidCo2Footprint,
+		errors.ErrInvalidUUID:
 		return fasthttp.StatusBadRequest
 	default:
 		return code

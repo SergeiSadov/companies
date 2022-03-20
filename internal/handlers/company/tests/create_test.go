@@ -50,6 +50,44 @@ func Test_CreateBadRequest(t *testing.T) {
 	assert.Equal(t, fasthttp.StatusBadRequest, ctx.Response.StatusCode())
 }
 
+func Test_CreateBadRequestTooLongName(t *testing.T) {
+	req := CreateCompanyRequestOk
+	req.Name = string256Char
+	companyRepoMock := mock_company.NewMockIRepository(gomock.NewController(t))
+
+	handler := prepareHandler(&params{
+		companyRepo: companyRepoMock,
+	})
+
+	ctx, err := prepareContext(&contextParams{
+		request: req,
+	})
+	assert.NoError(t, err)
+
+	handler.Create(ctx)
+	assert.NoError(t, err)
+	assert.Equal(t, fasthttp.StatusBadRequest, ctx.Response.StatusCode())
+}
+
+func Test_CreateBadRequestWrongUUID(t *testing.T) {
+	req := CreateCompanyRequestOk
+	req.Industry.ID = "1234"
+	companyRepoMock := mock_company.NewMockIRepository(gomock.NewController(t))
+
+	handler := prepareHandler(&params{
+		companyRepo: companyRepoMock,
+	})
+
+	ctx, err := prepareContext(&contextParams{
+		request: req,
+	})
+	assert.NoError(t, err)
+
+	handler.Create(ctx)
+	assert.NoError(t, err)
+	assert.Equal(t, fasthttp.StatusBadRequest, ctx.Response.StatusCode())
+}
+
 func extractCreateResponse(ctx *fasthttp.RequestCtx) (res *api.CreateCompanyResponse, err error) {
 	return res, json.Unmarshal(ctx.Response.Body(), &res)
 }

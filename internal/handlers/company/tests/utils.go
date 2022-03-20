@@ -8,6 +8,7 @@ import (
 
 	"companies/internal/handlers"
 	"companies/internal/handlers/company"
+	"companies/internal/handlers/company/validators"
 	company_repository "companies/internal/repositories/company"
 	company_use_case "companies/internal/usecases/company"
 	"companies/pkg/error_adapters/http_adapter"
@@ -37,6 +38,7 @@ func prepareHandler(p *params) (handler company.IHandler) {
 			http_adapter.AdaptNotFoundError,
 			http_adapter.AdaptBadRequestError,
 		),
+		Validator: validators.New(validators.PreparedValidatorParams),
 	})
 }
 
